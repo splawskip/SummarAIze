@@ -27,7 +27,7 @@ function Results() {
   // Load previously summarized articles on component mount.
   React.useEffect(() => {
     // Pull previously summarized articles from localStorage.
-    const articlesFromLocalStorage = JSON.parse(localStorage.getItem('articles') ?? JSON.stringify({}));
+    const articlesFromLocalStorage = JSON.parse(localStorage.getItem('articles') ?? JSON.stringify([]));
     // If we got articles set them.
     if (articlesFromLocalStorage) {
       setAllArticles(articlesFromLocalStorage);
