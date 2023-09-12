@@ -1,28 +1,41 @@
-import { logo } from '../../assets';
+// Icons.
+import { logo, github } from '../../assets';
 
-export default function Hero() {
+function Hero() {
+  // Spit it out.
   return (
     <header className="w-full flex justify-center items-center flex-col">
       <nav className="flex justify-between items-center w-full mb-10 pt-3">
-        <p className="flex justify-start items-center gap-3 orange_gradient font-bold">
-          <img src={logo} alt="SummarAIze Logo" className="w-14 object-contain" />
+        <p className="flex flex-col justify-start items-center blue-gradient font-bold">
+          <img src={logo} alt="SummarAIze Logo" title="SummarAIze Logo" className="w-14 object-contain" />
           SummarAIze
         </p>
-        <button type="button" className="black_btn">Github</button>
+        <a
+          href="https://github.com/splawskip/SummarAIze"
+          title="Github"
+          className="github-btn"
+          rel="nofollow noopener noreferrer"
+          target="_blank"
+        >
+          <img src={github} alt="Github logo" className="w-8 h-8 object-contain" />
+          Github
+        </a>
       </nav>
-      <h1 className="head_text">
+      <h1 className="h1">
         Summarize Articles with
         {' '}
         <br className="max-md:hidden" />
-        <span className="orange_gradient">OpenAI GPT-4</span>
+        <span className="blue-gradient">OpenAI GPT-4</span>
       </h1>
       <h2 className="desc">
-        Simplify your reading with
+        Simplify and fastify your reading with
         {' '}
-        <span className="orange_gradient font-bold">SummarAIze</span>
+        <span className="blue-gradient font-bold">SummarAIze</span>
         , an open-source article summarizer that
         transforms lengthy articles into clear and concise summaries
       </h2>
     </header>
   );
 }
+
+export default Hero;

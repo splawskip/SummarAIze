@@ -2,11 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/*
-  Note: The styles for this gradient grid background is heavily inspired by the creator of this amazing site (https://dub.sh) – all credits go to them!
-*/
-
-.main {
+.site-background {
   width: 100vw;
   min-height: 100vh;
   position: fixed;
@@ -16,17 +12,17 @@
   pointer-events: none;
 }
 
-.main:before {
+.site-background:before {
   background: radial-gradient(circle, rgba(2, 0, 36, 0) 0, #fafafa 100%);
   position: absolute;
-  content: "";
+  content: '';
   z-index: 2;
   width: 100%;
   height: 100%;
   top: 0;
 }
 
-.main:after {
+.site-background:after {
   content: "";
   background-image: url("/src/assets/grid.svg");
   z-index: 1;
@@ -38,7 +34,7 @@
   filter: invert(1);
 }
 
-.gradient {
+.bg-gradient {
   height: fit-content;
   z-index: 3;
   width: 100%;
@@ -63,55 +59,58 @@
   opacity: 0.15;
 }
 
-@media screen and (max-width: 640px) {
-  .main {
-    padding: 0;
-  }
+.gradient-border {
+  --borderWidth: 3px;
+  background: transparent;
+  position: relative;
+  border-radius: 10px;
 }
 
-/* Tailwind Styles */
-
-.app {
-  @apply relative z-10 flex justify-center items-center flex-col max-w-7xl mx-auto sm:px-16 px-6;
+.gradient-border:after {
+  content: '';
+  position: absolute;
+  top: calc(-1 * var(--borderWidth));
+  left: calc(-1 * var(--borderWidth));
+  height: calc(100% + var(--borderWidth) * 2);
+  width: calc(100% + var(--borderWidth) * 2);
+  background: linear-gradient(60deg, #f79533, #f37055, #ef4e7b, #a166ab, #5073b8, #1098ad, #07b39b, #6fba82);
+  border-radius: calc(2 * var(--borderWidth));
+  z-index: -1;
+  background-size: 300% 300%;
 }
 
-.black_btn {
-  @apply rounded-full border border-black bg-black py-1.5 px-5 text-sm text-white transition-all hover:bg-white hover:text-black;
-}
-
-.head_text {
-  @apply mt-5 text-5xl font-extrabold leading-[1.15] text-black sm:text-6xl text-center;
-}
-
-.orange_gradient {
+.orange-gradient {
   @apply bg-gradient-to-r from-amber-500 via-orange-600 to-yellow-500 bg-clip-text text-transparent;
+}
+
+.blue-gradient {
+  @apply font-black bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent;
+}
+
+.h1 {
+  @apply mt-5 text-5xl font-extrabold leading-[1.15] text-black sm:text-6xl text-center;
 }
 
 .desc {
   @apply mt-5 text-lg text-gray-600 sm:text-xl text-center max-w-2xl;
 }
 
-.url_input {
+.github-btn {
+  @apply flex justify-between items-center gap-2 rounded-full border border-black bg-black py-1.5 px-5 text-sm text-white transition-all hover:bg-white hover:text-black;
+}
+
+.copy-btn {
+  @apply w-7 h-7 rounded-full bg-white/10 shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.2)] backdrop-blur flex justify-center items-center cursor-pointer hover:bg-gray-200 transition-colors;
+}
+
+.icon-input {
   @apply block w-full rounded-md border border-gray-200 bg-white py-2.5 pl-10 pr-12 text-sm shadow-lg font-satoshi font-medium focus:border-black focus:outline-none focus:ring-0;
 }
 
-.submit_btn {
+.submit-btn {
   @apply hover:border-gray-700 hover:text-gray-700 absolute inset-y-0 right-0 my-1.5 mr-1.5 flex w-10 items-center justify-center rounded border border-gray-200 font-sans text-sm font-medium text-gray-400;
 }
 
-.link_card {
-  @apply p-3 flex justify-start items-center flex-row bg-white border border-gray-200 gap-3 rounded-lg cursor-pointer;
+.heart {
+  @apply will-change-transform relative inline-block w-4 h-4 my-0 mx-3 text-white bg-red-600 rounded-br-md rotate-45 before:absolute before:top-0 before:-left-1/2 before:w-4 before:h-4 before:bg-red-600 before:rounded-full after:absolute after:-top-1/2 after:left-0 after:w-4 after:h-4 after:bg-red-600 after:rounded-full;
 }
-
-.copy_btn {
-  @apply w-7 h-7 rounded-full bg-white/10 shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.2)] backdrop-blur flex justify-center items-center cursor-pointer;
-}
-
-.blue_gradient {
-  @apply font-black bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent;
-}
-
-.summary_box {
-  @apply rounded-xl border border-gray-200 bg-white/20 shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.2)] backdrop-blur p-4;
-}
-

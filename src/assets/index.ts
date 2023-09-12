@@ -3,6 +3,7 @@ import loader from './loader.svg';
 import copy from './copy.svg';
 import logo from './logo.png';
 import tick from './tick.svg';
+import github from './github.png';
 
 export {
   linkIcon,
@@ -10,4 +11,5 @@ export {
   copy,
   logo,
   tick,
+  github,
 };
