@@ -26,7 +26,7 @@ Start using SummarAIze today and experience the future of effortless article sum
 
 ## See it live
 
-You can access the live version of SummarAIze by visiting: [SummarAIze Live]( splawskip.github.io/SummarAIze/ )
+You can access the live version of SummarAIze by visiting: [SummarAIze Live](https://splawskip.github.io/SummarAIze/)
 
 ## Tech Stack:
 
