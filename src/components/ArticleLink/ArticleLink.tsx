@@ -15,7 +15,7 @@ function ArticleLink({ article, setCurrentArticle } : ArticleLinkProps) {
    * state after a delay.
    *
    * @param copyUrl - The URL to be copied to the clipboard.
-   * @returns void.
+   * @returns - Void.
    */
   const handleCopy = (copyUrl:string) : void => {
     setCopied(copyUrl);

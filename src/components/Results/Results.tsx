@@ -27,10 +27,10 @@ function Results() {
   // Load previously summarized articles on component mount.
   React.useEffect(() => {
     // Pull previously summarized articles from localStorage.
-    const articlesFromLocalStorage = JSON.parse(localStorage.getItem('articles') ?? JSON.stringify([]));
+    const alreadyProcessedArticles:Article[] = JSON.parse(localStorage.getItem('articles') ?? JSON.stringify([]));
     // If we got articles set them.
-    if (articlesFromLocalStorage) {
-      setAllArticles(articlesFromLocalStorage);
+    if (alreadyProcessedArticles) {
+      setAllArticles(alreadyProcessedArticles);
     }
   }, []);
   /**
@@ -41,18 +41,32 @@ function Results() {
    * with the new article data if a summary is received.
    *
    * @param event - The form submission event.
-   * @returns A Promise that resolves to `void`.
+   * @returns - A Promise that resolves to void.
   */
-  const handleSubmit = async (event:React.FormEvent) : Promise<void> => {
+  const handleFormSubmit = async (event:React.FormEvent) : Promise<void> => {
     event.preventDefault();
+    // Check if given article was processed before.
+    const alreadyProcessedArticle = allArticles.find((article) => (
+      article.url === currentArticle.url
+    ));
+    // If article was processed before, set it as current and bail,
+    // so we won't make unnecessary calls.
+    if (typeof alreadyProcessedArticle !== 'undefined') {
+      setCurrentArticle(alreadyProcessedArticle);
+      return;
+    }
     // Call summary endpoint.
     const { data } = await getSummary({ articleUrl: currentArticle.url });
     // Check if we got article summary.
     if (data?.summary) {
       // Create new article.
-      const newArticle = { ...currentArticle, summary: data.summary, id: crypto.randomUUID() };
+      const newArticle:Article = {
+        ...currentArticle,
+        summary: data.summary,
+        id: crypto.randomUUID(),
+      };
       // Push fresh article into articles list.
-      const newAllArticles = [newArticle, ...allArticles];
+      const newAllArticles:Article[] = [newArticle, ...allArticles];
       // Update state variables.
       setCurrentArticle(newArticle);
       setAllArticles(newAllArticles);
@@ -60,14 +74,23 @@ function Results() {
       localStorage.setItem('articles', JSON.stringify(newAllArticles));
     }
   };
+  /**
+   * Handles changes to the article URL input.
+   *
+   * @param event - The event object representing the change in the input field.
+   * @returns - Void
+   */
+  const handleUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => (
+    setCurrentArticle({ ...currentArticle, url: event.target.value })
+  );
   // Spit it out.
   return (
     <section className="mt-16 w-full max-w-xl">
       <div className="flex flex-col w-full gap-10">
-        <form className="relative flex justify-center items-center" onSubmit={handleSubmit}>
+        <form className="relative flex justify-center items-center" onSubmit={handleFormSubmit}>
           <img src={linkIcon} alt="Link Icon" className="absolute left-0 my-2 ml-3 w-5" />
-          <input type="url" placeholder="Enter a URL" name="url-input" id="url-input" value={currentArticle.url} onChange={(event) => setCurrentArticle({ ...currentArticle, url: event.target.value })} required className="icon-input peer" />
-          <button type="submit" className="submit-btn peer-focus:border-gray-700 per-focus:text-gray-700">
+          <input type="url" placeholder="Enter a URL" name="url-input" id="url-input" value={currentArticle.url} onChange={handleUrlChange} required className="icon-input peer" />
+          <button type="submit" className="submit-btn peer-focus:border-gray-700 peer-focus:text-gray-700">
             ⮐
           </button>
         </form>
