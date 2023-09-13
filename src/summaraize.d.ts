@@ -6,6 +6,7 @@ type Article = {
   id: string;
   url: string;
   summary: string;
+  language: string;
 };
 
 type ArticleLinkProps = {
@@ -16,4 +17,8 @@ type ArticleLinkProps = {
 type VisuallyHiddenProps = {
   children: React.ReactNode,
   className?: string,
+};
+
+type SupportedLanguages = {
+  [key: string]: string;
 };

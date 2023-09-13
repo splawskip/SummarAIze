@@ -8,11 +8,14 @@ import VisuallyHidden from '../VisuallyHidden';
 import {
   linkIcon,
   loader,
+  languageIcon,
 } from '../../assets';
 // Get Redux helpers.
 import isFetchBaseQueryError from '../../services/helpers';
 // Article Redux hook.
 import { useLazyGetSummaryQuery } from '../../services/article';
+// Enums.
+import SupportedLanguages from '../../utils/constants';
 
 function Results() {
   // Set state for article.
@@ -20,15 +23,19 @@ function Results() {
     id: '',
     url: '',
     summary: '',
+    language: '',
   });
   // Set state for articles.
   const [allArticles, setAllArticles] = React.useState<Array<Article>>([]);
   // Get Redux endpoint and fetching helpers.
   const [getSummary, { isError, error, isFetching }] = useLazyGetSummaryQuery();
+  const [language, setLanguage] = React.useState('en');
   // Grab ref to url input.
   const urlInputRef = React.useRef<HTMLInputElement>(null);
   // Grab id for url input.
   const urlInputId:string = React.useId();
+  // Grab id for language select.
+  const languageSelectId:string = React.useId();
   // Load previously summarized articles on component mount.
   React.useEffect(() => {
     // Pull previously summarized articles from localStorage.
@@ -56,7 +63,7 @@ function Results() {
     event.preventDefault();
     // Check if given article was processed before.
     const alreadyProcessedArticle = allArticles.find((article) => (
-      article.url === currentArticle.url
+      article.url === currentArticle.url && article.language === language
     ));
     // If article was processed before, set it as current and bail,
     // so we won't make unnecessary calls.
@@ -65,14 +72,15 @@ function Results() {
       return;
     }
     // Call summary endpoint.
-    const { data } = await getSummary({ articleUrl: currentArticle.url });
+    const { data } = await getSummary({ articleUrl: currentArticle.url, lang: language });
     // Check if we got article summary.
     if (data?.summary) {
       // Create new article.
       const newArticle:Article = {
         ...currentArticle,
-        summary: data.summary,
         id: crypto.randomUUID(),
+        summary: data.summary,
+        language,
       };
       // Push fresh article into articles list.
       const newAllArticles:Article[] = [newArticle, ...allArticles];
@@ -96,8 +104,8 @@ function Results() {
   return (
     <section className="mt-16 w-full max-w-xl">
       <div className="flex flex-col w-full gap-10">
-        <form className="relative flex justify-center items-center" onSubmit={handleFormSubmit}>
-          <label htmlFor={urlInputId} className="w-full flex justify-start items-center">
+        <form className="relative flex flex-col justify-center items-center gap-5" onSubmit={handleFormSubmit}>
+          <label htmlFor={urlInputId} className="relative w-full flex justify-start items-center">
             <img src={linkIcon} alt="Link Icon" className="absolute left-0 my-2 ml-3 w-5" />
             <VisuallyHidden>Enter a URL to article you want to summarize:</VisuallyHidden>
             <input type="url" placeholder="Enter a URL" name="url-input" id={urlInputId} value={currentArticle.url} ref={urlInputRef} onChange={handleUrlChange} required className="icon-input peer invalid:placeholder-shown:border-transparent invalid:border-red-500 valid:border-green-400 focus:placeholder-shown:border-gray-700" />
@@ -105,8 +113,23 @@ function Results() {
               ⮐
             </button>
           </label>
+          <label htmlFor={languageSelectId} className="relative w-full flex justify-start items-center before:content-['▼'] before:text-gray-400 before:text-sm before:absolute before:top-1/2 before:right-4 before:-translate-y-1/2">
+            <img src={languageIcon} alt="Language Icon" className="absolute left-0 my-2 ml-3 w-5" />
+            <VisuallyHidden>Select summary language:</VisuallyHidden>
+            <select id={languageSelectId} defaultValue="en" className="icon-input appearance-none" onChange={(event) => setLanguage(event.target.value)}>
+              {Object.entries(SupportedLanguages).map((languageData) => (
+                <option
+                  key={languageData[0]}
+                  value={languageData[0]}
+                >
+                  {languageData[1]}
+                </option>
+              ))}
+            </select>
+          </label>
         </form>
-        <ul className="flex flex-col gap-1 max-h-60 overflow-y-auto">
+        <ul className="flex flex-col gap-3 max-h-60 overflow-y-auto">
+          <li>Previously processed articles:</li>
           {allArticles.map((article) => (
             <ArticleLink key={article.id} article={article} setCurrentArticle={setCurrentArticle} />
           ))}

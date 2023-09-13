@@ -3,10 +3,14 @@ import {
   copy,
   tick,
 } from '../../assets';
+// Enums.
+import SupportedLanguages from '../../utils/constants';
 
 function ArticleLink({ article, setCurrentArticle } : ArticleLinkProps) {
   // Create state to indicate that copy action happened.
   const [copied, setCopied] = React.useState<string>('');
+  // Get string that indicates summary language.
+  const summaryLanguage:string = SupportedLanguages[article.language];
   /**
    * Handles copying a URL to the clipboard.
    *
@@ -35,7 +39,7 @@ function ArticleLink({ article, setCurrentArticle } : ArticleLinkProps) {
       <button type="button" className="copy-btn" onClick={() => handleCopy(article.url)}>
         <img src={copied === article.url ? tick : copy} alt="copy" className="w-[40%] h-[40%] object-contain" />
       </button>
-      <p className="flex-1 font-satoshi text-blue-700 font-medium text-sm text-left truncate">{article.url}</p>
+      <p className="flex-1 font-satoshi text-blue-700 font-medium text-sm text-left truncate">{`${summaryLanguage} ~ ${article.url}`}</p>
     </li>
   );
 }
