@@ -3,6 +3,7 @@ import React from 'react';
 // Components.
 import Summary from '../Summary';
 import ArticleLink from '../ArticleLink';
+import VisuallyHidden from '../VisuallyHidden';
 // Icons.
 import {
   linkIcon,
@@ -24,6 +25,10 @@ function Results() {
   const [allArticles, setAllArticles] = React.useState<Array<Article>>([]);
   // Get Redux endpoint and fetching helpers.
   const [getSummary, { isError, error, isFetching }] = useLazyGetSummaryQuery();
+  // Grab ref to url input.
+  const urlInputRef = React.useRef<HTMLInputElement>(null);
+  // Grab id for url input.
+  const urlInputId:string = React.useId();
   // Load previously summarized articles on component mount.
   React.useEffect(() => {
     // Pull previously summarized articles from localStorage.
@@ -31,6 +36,10 @@ function Results() {
     // If we got articles set them.
     if (alreadyProcessedArticles) {
       setAllArticles(alreadyProcessedArticles);
+    }
+    // If we got url input reference focus in on mount.
+    if (urlInputRef.current) {
+      urlInputRef.current.focus();
     }
   }, []);
   /**
@@ -88,11 +97,14 @@ function Results() {
     <section className="mt-16 w-full max-w-xl">
       <div className="flex flex-col w-full gap-10">
         <form className="relative flex justify-center items-center" onSubmit={handleFormSubmit}>
-          <img src={linkIcon} alt="Link Icon" className="absolute left-0 my-2 ml-3 w-5" />
-          <input type="url" placeholder="Enter a URL" name="url-input" id="url-input" value={currentArticle.url} onChange={handleUrlChange} required className="icon-input peer" />
-          <button type="submit" className="submit-btn peer-focus:border-gray-700 peer-focus:text-gray-700">
-            ⮐
-          </button>
+          <label htmlFor={urlInputId} className="w-full flex justify-start items-center">
+            <img src={linkIcon} alt="Link Icon" className="absolute left-0 my-2 ml-3 w-5" />
+            <VisuallyHidden>Enter a URL to article you want to summarize:</VisuallyHidden>
+            <input type="url" placeholder="Enter a URL" name="url-input" id={urlInputId} value={currentArticle.url} ref={urlInputRef} onChange={handleUrlChange} required className="icon-input peer invalid:placeholder-shown:border-transparent invalid:border-red-500 valid:border-green-400 focus:placeholder-shown:border-gray-700" />
+            <button type="submit" className="submit-btn peer-focus:border-gray-700 peer-focus:text-gray-700">
+              ⮐
+            </button>
+          </label>
         </form>
         <ul className="flex flex-col gap-1 max-h-60 overflow-y-auto">
           {allArticles.map((article) => (
