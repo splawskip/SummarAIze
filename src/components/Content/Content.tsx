@@ -135,16 +135,22 @@ function Content() {
           </label>
         </form>
         {/** Previously precessed articles. */}
-        <ul className="flex flex-col gap-3 max-h-60 overflow-y-auto">
-          <h2 className="font-satoshi font-bold text-gray-600 text-xl">
-            <span className="blue-gradient">Previously</span>
-            {' '}
-            processed articles:
-          </h2>
-          {allArticles.map((article) => (
-            <ArticleLink key={article.id} article={article} setCurrentArticle={setCurrentArticle} />
-          ))}
-        </ul>
+        {allArticles.length ? (
+          <ul className="flex flex-col gap-3 max-h-60 overflow-y-auto">
+            <h2 className="font-satoshi font-bold text-gray-600 text-xl">
+              <span className="blue-gradient">Previously</span>
+              {' '}
+              processed articles:
+            </h2>
+            {allArticles.map((article) => (
+              <ArticleLink
+                key={article.id}
+                article={article}
+                setCurrentArticle={setCurrentArticle}
+              />
+            ))}
+          </ul>
+        ) : undefined}
         {/** Article summary */}
         <div className="max-w-full flex flex-col gap-1 justify-center items-center">
           {isFetching && <Loader />}
