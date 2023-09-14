@@ -28,11 +28,11 @@ function Hero() {
         <span className="blue-gradient">OpenAI GPT-4</span>
       </h1>
       <h2 className="desc">
-        Simplify and fastify your reading with
+        Streamline and expedite your reading experience with
         {' '}
         <span className="blue-gradient font-bold">SummarAIze</span>
-        , an open-source article summarizer that
-        transforms lengthy articles into clear and concise summaries
+        , an open-source article summarizer that effortlessly condenses
+        lengthy articles into clear and concise summaries in your preferred language.
       </h2>
     </header>
   );

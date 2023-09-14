@@ -22,3 +22,5 @@ type VisuallyHiddenProps = {
 type SupportedLanguages = {
   [key: string]: string;
 };
+
+type ErrorProps = FetchBaseQueryError | SerializedError | undefined;

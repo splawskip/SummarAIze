@@ -10,7 +10,7 @@ Are you tired of sifting through long articles to get the information you need? 
 
 🚀 Instant Summaries: Simply paste the link to any article, and SummarAIze will use cutting-edge OpenAI technology to generate a concise summary for you in seconds.
 
-🧠 Advanced AI: Our powerful AI algorithms understand the context and key points of articles, ensuring you get a meaningful summary that captures the essence of the content.
+🧠 OpenAI: We use powerful OpenAI algorithms which understand the context and key points of articles, ensuring you get a meaningful summary that captures the essence of the content.
 
 📚 Stay Informed: SummarAIze empowers you to stay informed even when you're short on time. Quickly grasp the main ideas, insights, and takeaways from any article.
 
@@ -19,6 +19,8 @@ Are you tired of sifting through long articles to get the information you need? 
 🔗 Universal Compatibility: SummarAIze supports a wide range of articles from news websites, blogs, research papers, and more. Just paste the link, and let us do the rest.
 
 📱 Mobile and Desktop: Access SummarAIze on your favorite devices, so you're always just a click away from smarter reading.
+
+🌎 Language Diversity: Article summaries can be generated in you preferred language.
 
 Don't waste any more time reading lengthy articles. SummarAIze does the hard work for you, delivering the essence of articles right at your fingertips.
 

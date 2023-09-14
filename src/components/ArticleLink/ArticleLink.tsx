@@ -10,7 +10,7 @@ function ArticleLink({ article, setCurrentArticle } : ArticleLinkProps) {
   // Create state to indicate that copy action happened.
   const [copied, setCopied] = React.useState<string>('');
   // Get string that indicates summary language.
-  const summaryLanguage:string = SupportedLanguages[article.language];
+  const summaryLanguage:string = SupportedLanguages[article.language ?? 'en'];
   /**
    * Handles copying a URL to the clipboard.
    *
@@ -37,7 +37,7 @@ function ArticleLink({ article, setCurrentArticle } : ArticleLinkProps) {
       onKeyDown={(event) => event.code === 'Enter' && setCurrentArticle(article)}
     >
       <button type="button" className="copy-btn" onClick={() => handleCopy(article.url)}>
-        <img src={copied === article.url ? tick : copy} alt="copy" className="w-[40%] h-[40%] object-contain" />
+        <img src={copied === article.url ? tick : copy} alt="Copy Icon" className="w-[40%] h-[40%] object-contain" />
       </button>
       <p className="flex-1 font-satoshi text-blue-700 font-medium text-sm text-left truncate">{`${summaryLanguage} ~ ${article.url}`}</p>
     </li>

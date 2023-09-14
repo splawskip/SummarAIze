@@ -1,6 +1,6 @@
 // Components.
 import Hero from '../Hero';
-import Results from '../Results';
+import Content from '../Content';
 import Footer from '../Footer';
 
 function App() {
@@ -10,9 +10,9 @@ function App() {
       <section className="site-background">
         <div className="bg-gradient" />
       </section>
-      <section className="site-content relative z-10 flex justify-center items-center flex-col max-w-7xl mx-auto sm:px-16 px-6">
+      <section className="site-content relative z-10 flex gap-5 justify-center items-center flex-col max-w-7xl mx-auto sm:px-16 px-6">
         <Hero />
-        <Results />
+        <Content />
         <Footer />
       </section>
     </main>

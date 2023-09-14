@@ -4,20 +4,19 @@ import React from 'react';
 import Summary from '../Summary';
 import ArticleLink from '../ArticleLink';
 import VisuallyHidden from '../VisuallyHidden';
+import Loader from '../Loader';
+import Error from '../Error';
 // Icons.
 import {
   linkIcon,
-  loader,
   languageIcon,
 } from '../../assets';
-// Get Redux helpers.
-import isFetchBaseQueryError from '../../services/helpers';
 // Article Redux hook.
 import { useLazyGetSummaryQuery } from '../../services/article';
 // Enums.
 import SupportedLanguages from '../../utils/constants';
 
-function Results() {
+function Content() {
   // Set state for article.
   const [currentArticle, setCurrentArticle] = React.useState<Article>({
     id: '',
@@ -27,8 +26,7 @@ function Results() {
   });
   // Set state for articles.
   const [allArticles, setAllArticles] = React.useState<Array<Article>>([]);
-  // Get Redux endpoint and fetching helpers.
-  const [getSummary, { isError, error, isFetching }] = useLazyGetSummaryQuery();
+  // Set state for summary language.
   const [language, setLanguage] = React.useState('en');
   // Grab ref to url input.
   const urlInputRef = React.useRef<HTMLInputElement>(null);
@@ -36,7 +34,9 @@ function Results() {
   const urlInputId:string = React.useId();
   // Grab id for language select.
   const languageSelectId:string = React.useId();
-  // Load previously summarized articles on component mount.
+  // Get Redux endpoint and fetching helpers.
+  const [getSummary, { isError, error, isFetching }] = useLazyGetSummaryQuery();
+  // Load previously summarized articles on component mount and foucs main input.
   React.useEffect(() => {
     // Pull previously summarized articles from localStorage.
     const alreadyProcessedArticles:Article[] = JSON.parse(localStorage.getItem('articles') ?? JSON.stringify([]));
@@ -102,9 +102,15 @@ function Results() {
   );
   // Spit it out.
   return (
-    <section className="mt-16 w-full max-w-xl">
-      <div className="flex flex-col w-full gap-10">
-        <form className="relative flex flex-col justify-center items-center gap-5" onSubmit={handleFormSubmit}>
+    <section className="mt-14 w-full max-w-xl">
+      <main className="flex flex-col w-full gap-10">
+        {/** Build form component. */}
+        <form className="relative flex flex-col justify-center items-center gap-3" onSubmit={handleFormSubmit}>
+          <h2 className="w-full text-left font-satoshi font-bold text-gray-600 text-xl">
+            <span className="blue-gradient">Start</span>
+            {' '}
+            here:
+          </h2>
           <label htmlFor={urlInputId} className="relative w-full flex justify-start items-center">
             <img src={linkIcon} alt="Link Icon" className="absolute left-0 my-2 ml-3 w-5" />
             <VisuallyHidden>Enter a URL to article you want to summarize:</VisuallyHidden>
@@ -128,61 +134,29 @@ function Results() {
             </select>
           </label>
         </form>
+        {/** Previously precessed articles. */}
         <ul className="flex flex-col gap-3 max-h-60 overflow-y-auto">
-          <li>Previously processed articles:</li>
+          <h2 className="font-satoshi font-bold text-gray-600 text-xl">
+            <span className="blue-gradient">Previously</span>
+            {' '}
+            processed articles:
+          </h2>
           {allArticles.map((article) => (
             <ArticleLink key={article.id} article={article} setCurrentArticle={setCurrentArticle} />
           ))}
         </ul>
-      </div>
-      <div className="my-10 max-w-full flex flex-col gap-1 justify-center items-center">
-        {isFetching && (
-          <>
-            <img src={loader} alt="loader" className="w-20 h-10 object-contain" />
-            <p className="font-inter font-medium text-m text-gray-700">
-              Please wait, your article is being
-              {' '}
-              <span className="blue-gradient">SummarAIzed</span>
-              {' '}
-              🤖🧠
-            </p>
-          </>
-        )}
-        {isError && (
-          <>
-            <p className="font-inter font-bold orange-gradient text-center">
-              Whoops! Something went wrong:
-              {isFetchBaseQueryError(error) && (
-                <>
-                  <br />
-                  <span className="font-satoshi font-normal text-red-600">
-                    {'error' in error ? error.error : JSON.stringify(error.data)}
-                  </span>
-                </>
-              ) }
-            </p>
-            <p className="font-inter text-gray-700 text-center">
-              Please contact with developer 👉
-              {' '}
-              <a
-                href="https://github.com/splawskip"
-                title="Github"
-                rel="nofollow noopener noreferrer"
-                target="_blank"
-                className="uppercase blue-gradient"
-              >
-                here
-              </a>
-            </p>
-          </>
-        )}
-        {
+        {/** Article summary */}
+        <div className="max-w-full flex flex-col gap-1 justify-center items-center">
+          {isFetching && <Loader />}
+          {isError && <Error error={error} />}
+          {
           (currentArticle.summary && !isError && !isFetching)
           && <Summary>{currentArticle.summary}</Summary>
         }
-      </div>
+        </div>
+      </main>
     </section>
   );
 }
 
-export default Results;
+export default Content;
